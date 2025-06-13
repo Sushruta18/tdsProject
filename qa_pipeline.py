@@ -1,11 +1,24 @@
-from langchain.vectorstores import Chroma
+from langchain_community.vectorstores import Chroma
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.chat_models import ChatOpenAI
+from langchain_community.document_loaders import TextLoader
+from langchain_community.llms import OpenAI
+from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
-from langchain.chat_models import ChatOpenAI
-from langchain_huggingface import HuggingFaceEmbeddings
 
-persist_directory = "db"
-embedding = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-vectorstore = Chroma(persist_directory=persist_directory, embedding_function=embedding)
-retriever = vectorstore.as_retriever()
-llm = ChatOpenAI(model="gpt-3.5-turbo-0125")  # or "gpt-4o" if you want to try better results
-qa_chain = RetrievalQA.from_chain_type(llm=llm, retriever=retriever)
+# Load vector store (example)
+embedding = HuggingFaceEmbeddings()
+vectordb = Chroma(persist_directory="db", embedding_function=embedding)
+
+retriever = vectordb.as_retriever(search_kwargs={"k": 3})
+
+qa_chain = RetrievalQA.from_chain_type(
+    llm=ChatOpenAI(model_name="gpt-3.5-turbo"),
+    chain_type="stuff",
+    retriever=retriever
+)
+
+def answer_question(question, image_text=""):
+    full_query = question + "\n" + image_text
+    result = qa_chain(full_query)
+    return result['result'], []

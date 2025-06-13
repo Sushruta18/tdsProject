@@ -3,7 +3,7 @@ uvicorn
 pydantic
 pillow
 pytesseract
-langchain
+langchain>=0.2.0
 langchain-community
 langchain-huggingface
 chromadb
