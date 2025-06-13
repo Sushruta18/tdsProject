@@ -10,6 +10,4 @@ chromadb
 openai
 selenium
 webdriver-manager
-HEAD
 sentence-transformers
-7f81b14e773162fed47e3fb3422377a9c06b7baa
