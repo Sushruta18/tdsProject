@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+pydantic
+pillow
+pytesseract
+langchain
+langchain-community
+langchain-huggingface
+chromadb
+openai
+selenium
+webdriver-manager
+sentence-transformers
