@@ -6,6 +6,8 @@ from PIL import Image
 from io import BytesIO
 import pytesseract
 from qa_pipeline import answer_question
+import os
+import uvicorn
 
 app = FastAPI()
 
@@ -26,3 +28,8 @@ async def get_answer(data: QuestionRequest):
     
     answer, links = answer_question(data.question, image_text)
     return {"answer": answer, "links": links}
+
+# Run app when executed directly (required for Render)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port)
